@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+    db-redis:
+        container_name: redis_db_node
+        image: redis:alpine
+        ports:
+            - '6379:6379'
+
+    web-api:
+        container_name: api_node_redis
+        build: .
+        ports:
+            - '3000:3000'
+        volumes:
+            - ./api:/api
+        command: sh -c "npm install && node index.js"
+        depends_on:
+            - db-redis
